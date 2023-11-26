@@ -1,23 +1,27 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Axios from 'axios';
 
 function App() {
+const [name, setName] = useState('');
+const [predictedData, setPredictedData] = useState(null);
+
+ const fetchData = () => {
+  Axios.get(`https://api.agify.io/?name=${name}`).then((res) => {
+    setPredictedData(res.data);
+  })
+ }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+     <input placeholder='Name...' onChange={(event) => setName(event.target.value)}/>
+     <button onClick={fetchData}>Predict Data</button>
+     
+     <h2>Predicted Name: {predictedData?.name}</h2>
+     <h2>Predicted Age: {predictedData?.age}</h2>
+     <h2>Count of Users: {predictedData?.count}</h2>
+     </div>
     </div>
   );
 }
